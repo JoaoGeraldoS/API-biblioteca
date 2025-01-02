@@ -1,5 +1,7 @@
 package models
 
+// Reponsavel pelo instancia das tabelas no banco de dados
+
 type Books struct {
 	ID         int64  `json:"id"`
 	Title      string `json:"title" binding:"required,min=3"`

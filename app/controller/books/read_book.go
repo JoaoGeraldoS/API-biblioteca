@@ -1,5 +1,7 @@
 package books
 
+// Leitura dos livros, retorna uma lista de todos os livors do sistema
+
 import (
 	"database/sql"
 	"log"

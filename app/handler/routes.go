@@ -1,5 +1,7 @@
 package handler
 
+// Rotas do endpoints
+
 import (
 	"database/sql"
 
@@ -12,6 +14,8 @@ func Routes(db *sql.DB) *gin.Engine {
 
 	r.POST("/books", books.CreateBookHandler(db))
 	r.GET("/books", books.ReadBookHandler(db))
+	r.PUT("/books/:id", books.UpdateBookHandler(db))
+	r.DELETE("/books/:id", books.DeleteBookHandler(db))
 
 	return r
 }
