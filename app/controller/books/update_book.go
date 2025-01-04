@@ -10,7 +10,7 @@ import (
 func UpdateBook(id string, db *sql.DB, book *models.Books) (*models.Books, error) {
 	query := `UPDATE books SET title = ? , author = ? , description = ? , content = ? WHERE id = ?`
 
-	response, err := db.Exec(query, book.Title, book.Author, book.Descrition, book.Content, id)
+	response, err := db.Exec(query, book.Title, book.Author, book.Description, book.Content, id)
 	if err != nil {
 		log.Println("Erro ao atualizar dados!")
 	}

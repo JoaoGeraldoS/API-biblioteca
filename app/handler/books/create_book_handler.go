@@ -19,7 +19,12 @@ func CreateBookHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 
-		respose, err := books.CreateBook(db, book)
+		var categories []string
+		for _, category := range book.Categories {
+			categories = append(categories, category.Name)
+		}
+
+		respose, err := books.CreateBook(db, &book, categories)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "erro interno do servidor"})
 			return

@@ -10,25 +10,54 @@ import (
 )
 
 func ReadBook(db *sql.DB) ([]models.Books, error) {
-	rows, err := db.Query(`select id, title, author, description, content,
-	 DATE_FORMAT(created_at, '%d/%m/%y %H:%i:%s') AS created_at, DATE_FORMAT(updated_at, '%d/%m/%y %H:%i:%s') AS updated_at from books`)
+	booksMap := make(map[int64]*models.Books)
+	rows, err := db.Query(`select b.id, b.title, b.author, b.description, b.content,
+		DATE_FORMAT(b.created_at, '%d/%m/%y %H:%i:%s') AS created_at, DATE_FORMAT(b.updated_at, '%d/%m/%y %H:%i:%s') AS updated_at,
+		c.id, c.name, DATE_FORMAT(c.created_at, '%d/%m/%y %H:%i:%s') AS created_at
+		from intermediaria i
+		join books b on i.book_id = b.id
+		join categories c on i.category_id = c.id`,
+	)
 	if err != nil {
-
 		log.Println("Erro ao buscar dados")
 	}
 	defer rows.Close()
 
-	var books []models.Books
-
 	for rows.Next() {
-		var book models.Books
+		var (
+			bookID, categoryID                                          int64
+			title, author, description, content, created_at, updated_at string
+			categoryName, created_at_c                                  string
+		)
 
-		err := rows.Scan(&book.ID, &book.Title, &book.Author, &book.Descrition, &book.Content, &book.Created_at, &book.Updated_at)
+		err := rows.Scan(&bookID, &title, &author, &description, &content, &created_at, &updated_at, &categoryID, &categoryName, &created_at_c)
 		if err != nil {
 			log.Println("Erro ao verificar dados")
 		}
 
-		books = append(books, book)
+		if _, exists := booksMap[bookID]; !exists {
+			booksMap[bookID] = &models.Books{
+				ID:          bookID,
+				Title:       title,
+				Author:      author,
+				Description: description,
+				Content:     content,
+				Created_at:  created_at,
+				Updated_at:  updated_at,
+				Categories:  []models.Categories{},
+			}
+		}
+
+		booksMap[bookID].Categories = append(booksMap[bookID].Categories, models.Categories{
+			ID:           categoryID,
+			Name:         categoryName,
+			Created_at_c: created_at_c,
+		})
+	}
+
+	var books []models.Books
+	for _, book := range booksMap {
+		books = append(books, *book)
 	}
 
 	return books, nil
