@@ -10,15 +10,15 @@ import (
 	"github.com/JoaoGeraldoS/API-biblioteca/app/validacao"
 )
 
-func CreateBook(db *sql.DB, book *models.Books, categories []string) (*models.Books, error) {
+func CreateBook(db *sql.DB, book *models.Books, categories []string, file string) (*models.Books, error) {
 	tx, err := db.Begin()
 	if err != nil {
 		log.Printf("Erro ao iniciar transação: %v", err)
 	}
 
-	query := `INSERT INTO books (title, author, description, content) VALUES (?, ?, ?, ?)`
+	query := `INSERT INTO books (title, author, description, content, img) VALUES (?, ?, ?, ?, ?)`
 
-	response, err := db.Exec(query, book.Title, book.Author, book.Description, book.Content)
+	response, err := db.Exec(query, book.Title, book.Author, book.Description, book.Content, file)
 	if err != nil {
 		fmt.Println("Erro ao inserir os dados!", err)
 	}
@@ -29,6 +29,7 @@ func CreateBook(db *sql.DB, book *models.Books, categories []string) (*models.Bo
 	}
 
 	book.ID = id
+	book.Img = file
 
 	for _, category := range book.Categories {
 		_, err := validacao.ValidaCategories(db, category.Name)

@@ -10,6 +10,7 @@ type Books struct {
 	Content     string       `json:"content"`
 	Created_at  string       `json:"created_at"`
 	Updated_at  string       `json:"updated_at"`
+	Img         string       `json:"img"`
 	Categories  []Categories `json:"categories"`
 }
 

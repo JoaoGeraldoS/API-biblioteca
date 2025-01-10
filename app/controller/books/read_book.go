@@ -12,8 +12,8 @@ import (
 func ReadBook(db *sql.DB) ([]models.Books, error) {
 	booksMap := make(map[int64]*models.Books)
 	rows, err := db.Query(`select b.id, b.title, b.author, b.description, b.content,
-		DATE_FORMAT(b.created_at, '%d/%m/%y %H:%i:%s') AS created_at, DATE_FORMAT(b.updated_at, '%d/%m/%y %H:%i:%s') AS updated_at,
-		c.id, c.name, DATE_FORMAT(c.created_at, '%d/%m/%y %H:%i:%s') AS created_at
+		DATE_FORMAT(b.created_at, '%d/%m/%y %H:%i:%s') AS created_at, DATE_FORMAT(b.update_at, '%d/%m/%y %H:%i:%s') AS updated_at,
+		c.id, c.name, DATE_FORMAT(c.created_at, '%d/%m/%y %H:%i:%s') AS created_at, b.img
 		from intermediaria i
 		join books b on i.book_id = b.id
 		join categories c on i.category_id = c.id`,
@@ -25,14 +25,14 @@ func ReadBook(db *sql.DB) ([]models.Books, error) {
 
 	for rows.Next() {
 		var (
-			bookID, categoryID                                          int64
-			title, author, description, content, created_at, updated_at string
-			categoryName, created_at_c                                  string
+			bookID, categoryID                                               int64
+			title, author, description, content, created_at, updated_at, img string
+			categoryName, created_at_c                                       string
 		)
 
-		err := rows.Scan(&bookID, &title, &author, &description, &content, &created_at, &updated_at, &categoryID, &categoryName, &created_at_c)
+		err := rows.Scan(&bookID, &title, &author, &description, &content, &created_at, &updated_at, &categoryID, &categoryName, &created_at_c, &img)
 		if err != nil {
-			log.Println("Erro ao verificar dados")
+			log.Printf("Erro ao verificar dados, %v", err)
 		}
 
 		if _, exists := booksMap[bookID]; !exists {
@@ -44,6 +44,7 @@ func ReadBook(db *sql.DB) ([]models.Books, error) {
 				Content:     content,
 				Created_at:  created_at,
 				Updated_at:  updated_at,
+				Img:         img,
 				Categories:  []models.Categories{},
 			}
 		}
