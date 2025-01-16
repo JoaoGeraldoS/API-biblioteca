@@ -4,14 +4,14 @@ package models
 
 type Books struct {
 	ID          int64        `json:"id"`
-	Title       string       `json:"title" binding:"required,min=3"`
-	Author      string       `json:"author" binding:"required,min=2"`
-	Description string       `json:"description"`
-	Content     string       `json:"content"`
+	Title       string       `form:"title" json:"title"`
+	Author      string       `form:"author" json:"author"`
+	Description string       `form:"description" json:"description"`
+	Content     string       `form:"content" json:"content"`
 	Created_at  string       `json:"created_at"`
 	Updated_at  string       `json:"updated_at"`
 	Img         string       `json:"img"`
-	Categories  []Categories `json:"categories"`
+	Categories  []Categories `form:"categories" json:"categories"`
 }
 
 type Intermediaria struct {

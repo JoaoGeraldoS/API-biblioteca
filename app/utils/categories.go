@@ -8,26 +8,27 @@ import (
 func IdsCategories(tx *sql.Tx, names []string) ([]int64, error) {
 	ids := []int64{}
 	query := `SELECT id FROM categories WHERE name = ?`
+	// Busca no banco se existe id relacionado ao nome da categoria
 
-	for _, name := range names {
+	for _, name := range names { // Itera sobre o lista de nomes de categorias recebidas
 		var id int64
 
-		err := tx.QueryRow(query, name).Scan(&id)
+		err := tx.QueryRow(query, name).Scan(&id) // Realiza a query, e escanea os ids
 		if err != nil {
-			if err == sql.ErrNoRows {
-				return nil, fmt.Errorf("Categoria '%s' não encontrada", name)
+			if err == sql.ErrNoRows { // Caso der não exista a categoria
+				return nil, fmt.Errorf("categoria '%s' não encontrada", name)
 			}
-			return nil, fmt.Errorf("Erro ao buscar ID da categoria '%s': %v", name, err)
+			return nil, fmt.Errorf("erro ao buscar ID da categoria '%s': %v", name, err)
 		}
-		ids = append(ids, id)
+		ids = append(ids, id) // Adiciona o id ao array de a ids
 	}
-	return ids, nil
+	return ids, nil // Retorna o arry e um erro
 }
 
 func Relationship(tx *sql.Tx, bookID int64, categoriesIDs []int64) error {
 	query := `INSERT INTO intermediaria(book_id, category_id) VALUES (?, ?)`
-
-	for _, categoryID := range categoriesIDs {
+	// Insere a id da categoria e o id do livro relacionado na tabela intermediaria
+	for _, categoryID := range categoriesIDs { // Faz a iteração e adiciona no banco
 		_, err := tx.Exec(query, bookID, categoryID)
 		if err != nil {
 			return fmt.Errorf("Erro ao inserir relacionamento %v", err)

@@ -16,8 +16,7 @@ func Routes(db *sql.DB) *gin.Engine {
 
 	// Rota livros
 	r.POST("/books", books.CreateBookHandler(db))
-	r.GET("/books", books.ReadBookHandler(db))
-	r.GET("/books/:id", books.ReadUnicBookHandler(db))
+	r.GET("/books/:page", books.ReadBookHandler(db))
 	r.PUT("/books/:id", books.UpdateBookHandler(db))
 	r.DELETE("/books/:id", books.DeleteBookHandler(db))
 
@@ -28,6 +27,7 @@ func Routes(db *sql.DB) *gin.Engine {
 
 	// Rota Usuarios
 	r.POST("/users", users.CerateUserHandler(db))
+	r.GET("/users", users.ReadUsersHandler(db))
 
 	return r
 }

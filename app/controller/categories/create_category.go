@@ -21,5 +21,5 @@ func CreateCategory(db *sql.DB, cat models.Categories) (models.Categories, error
 	}
 
 	cat.ID = id
-	return cat, err
+	return cat, nil
 }

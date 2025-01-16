@@ -2,6 +2,7 @@ package books
 
 import (
 	"database/sql"
+	"log"
 	"net/http"
 	"path/filepath"
 
@@ -15,22 +16,11 @@ func CreateBookHandler(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var book models.Books
 
-		// if err := ctx.ShouldBindJSON(&book); err != nil {
-		// 	ctx.JSON(http.StatusBadRequest, gin.H{"error": "erro ao adicionar dados!"})
-		// 	return
-		// }
-
-		book.Title = ctx.PostForm("title")
-		book.Author = ctx.PostForm("author")
-		book.Description = ctx.PostForm("description")
-		book.Content = ctx.PostForm("content")
-
-		// Valida se todos os campos obrigatórios estão presentes
-		if book.Title == "" || book.Author == "" || book.Description == "" || book.Content == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Todos os campos são obrigatórios"})
-			return
+		if err := ctx.ShouldBindJSON(&book); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "dados nao encontrados"})
 		}
 
+		// Itera sobre as categorias vindo do json
 		var categories []string
 		for _, category := range book.Categories {
 			categories = append(categories, category.Name)
@@ -38,6 +28,7 @@ func CreateBookHandler(db *sql.DB) gin.HandlerFunc {
 
 		file, err := ctx.FormFile("img")
 		if err != nil {
+			log.Println(err)
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Capa é obrigatória"})
 			return
 		}

@@ -2,7 +2,7 @@ package categories
 
 import (
 	"database/sql"
-	"log"
+	"fmt"
 
 	"github.com/JoaoGeraldoS/API-biblioteca/app/models"
 )
@@ -12,7 +12,7 @@ func ReadCategories(db *sql.DB) ([]models.Categories, error) {
 
 	rows, err := db.Query(query)
 	if err != nil {
-		log.Printf("Erro ao buscar dados %v", err)
+		return nil, fmt.Errorf("erro ao buscar dados %v", err)
 	}
 	defer rows.Close()
 
@@ -23,7 +23,7 @@ func ReadCategories(db *sql.DB) ([]models.Categories, error) {
 
 		err = rows.Scan(&category.ID, &category.Name, &category.Created_at_c)
 		if err != nil {
-			log.Printf("Erro ao scanear dados %v", err)
+			return nil, fmt.Errorf("erro ao scanear dados %v", err)
 		}
 		categories = append(categories, category)
 	}

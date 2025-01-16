@@ -2,7 +2,7 @@ package books
 
 import (
 	"database/sql"
-	"log"
+	"fmt"
 
 	"github.com/JoaoGeraldoS/API-biblioteca/app/models"
 )
@@ -12,17 +12,17 @@ func UpdateBook(id string, db *sql.DB, book *models.Books) (*models.Books, error
 
 	response, err := db.Exec(query, book.Title, book.Author, book.Description, book.Content, id)
 	if err != nil {
-		log.Println("Erro ao atualizar dados!")
+		return nil, fmt.Errorf("erro ao atualizar dados! %v", err)
 	}
 
 	rowsAffected, err := response.RowsAffected()
 	if err != nil || rowsAffected == 0 {
-		log.Println("Erro ao validar dados")
+		return nil, fmt.Errorf("erro ao validar dados! %v", err)
 	}
 
 	id_book, err := response.LastInsertId()
 	if err != nil {
-		log.Println("Erro ao verificar id")
+		return nil, fmt.Errorf("erro ao verificar id! %v", err)
 	}
 
 	book.ID = id_book
