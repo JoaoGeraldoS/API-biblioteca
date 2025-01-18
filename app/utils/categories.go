@@ -26,7 +26,7 @@ func IdsCategories(tx *sql.Tx, names []string) ([]int64, error) {
 }
 
 func Relationship(tx *sql.Tx, bookID int64, categoriesIDs []int64) error {
-	query := `INSERT INTO intermediaria(book_id, category_id) VALUES (?, ?)`
+	query := `INSERT INTO intermediary(book_id, category_id) VALUES (?, ?)`
 	// Insere a id da categoria e o id do livro relacionado na tabela intermediaria
 	for _, categoryID := range categoriesIDs { // Faz a iteração e adiciona no banco
 		_, err := tx.Exec(query, bookID, categoryID)

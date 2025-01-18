@@ -16,9 +16,9 @@ func CreateBook(db *sql.DB, book *models.Books, categories []string, file string
 		return nil, fmt.Errorf("erro ao iniciar transação: %v", err)
 	}
 
-	query := `INSERT INTO books (title, author, description, content, img) VALUES (?, ?, ?, ?, ?)`
+	query := `INSERT INTO books (title, author_id, description, content, img) VALUES (?, ?, ?, ?, ?)`
 	// Insere os dados do livvro no banco de dados
-	response, err := db.Exec(query, book.Title, book.Author, book.Description, book.Content, file)
+	response, err := db.Exec(query, book.Title, book.AuthorId, book.Description, book.Content, file)
 	if err != nil {
 		return nil, fmt.Errorf("erro ao inserir os dados! %v", err)
 	}

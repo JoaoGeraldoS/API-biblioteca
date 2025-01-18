@@ -8,9 +8,9 @@ import (
 )
 
 func UpdateBook(id string, db *sql.DB, book *models.Books) (*models.Books, error) {
-	query := `UPDATE books SET title = ? , author = ? , description = ? , content = ? WHERE id = ?`
+	query := `UPDATE books SET title = ? , author_id = ? , description = ? , content = ? WHERE id = ?`
 
-	response, err := db.Exec(query, book.Title, book.Author, book.Description, book.Content, id)
+	response, err := db.Exec(query, book.Title, book.AuthorId, book.Description, book.Content, id)
 	if err != nil {
 		return nil, fmt.Errorf("erro ao atualizar dados! %v", err)
 	}

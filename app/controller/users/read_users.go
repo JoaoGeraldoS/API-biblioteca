@@ -10,7 +10,7 @@ import (
 
 func ReadUsers(id, name string, db *sql.DB) ([]models.Users, error) {
 	query := `SELECT id, name, email, DATE_FORMAT(created_at, '%d/%m/%y %H:%i:%s') as created_at,
-		DATE_FORMAT(update_at, '%d/%m/%y %H:%i:%s') as updated_at FROM users`
+		DATE_FORMAT(updated_at, '%d/%m/%y %H:%i:%s') as updated_at FROM users`
 
 	conditions := []string{}
 	params := []interface{}{}

@@ -28,6 +28,7 @@ func Routes(db *sql.DB) *gin.Engine {
 	// Rota Usuarios
 	r.POST("/users", users.CerateUserHandler(db))
 	r.GET("/users", users.ReadUsersHandler(db))
+	r.PUT("/users/:id", users.UpdateUserHandler(db))
 
 	return r
 }

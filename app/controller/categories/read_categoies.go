@@ -21,7 +21,7 @@ func ReadCategories(db *sql.DB) ([]models.Categories, error) {
 	for rows.Next() {
 		var category models.Categories
 
-		err = rows.Scan(&category.ID, &category.Name, &category.Created_at_c)
+		err = rows.Scan(&category.ID, &category.Name, &category.CreatedAtC)
 		if err != nil {
 			return nil, fmt.Errorf("erro ao scanear dados %v", err)
 		}

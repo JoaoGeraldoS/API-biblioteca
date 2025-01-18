@@ -2,6 +2,7 @@ package books
 
 import (
 	"database/sql"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -28,9 +29,12 @@ func ReadBookHandler(db *sql.DB) gin.HandlerFunc {
 		}
 
 		getid := ctx.Query("id")
+		title := ctx.Query("title")
+		author := ctx.Query("author")
 
-		response, err := books.ReadBook(getid, intPage, db)
+		response, err := books.ReadBook(getid, title, author, intPage, db)
 		if err != nil {
+			log.Println(err)
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "livros não encontrados!"})
 			return
 		}
