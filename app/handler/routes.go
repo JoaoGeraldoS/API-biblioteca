@@ -11,6 +11,7 @@ import (
 	"github.com/JoaoGeraldoS/API-biblioteca/app/handler/users"
 	"github.com/JoaoGeraldoS/API-biblioteca/app/middleware"
 	"github.com/gin-contrib/cors"
+
 	"github.com/gin-gonic/gin"
 )
 

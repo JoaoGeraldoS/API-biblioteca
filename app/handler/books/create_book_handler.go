@@ -46,6 +46,7 @@ func CreateBookHandler(db *sql.DB) gin.HandlerFunc {
 
 		uploadPath := "./uploads/capas"
 		err = os.MkdirAll(uploadPath, os.ModePerm)
+
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao criar diretório para salvar imagem"})
 			return
@@ -55,6 +56,7 @@ func CreateBookHandler(db *sql.DB) gin.HandlerFunc {
 		caminhoDestino := filepath.Join(uploadPath, nomeImg)
 
 		err = ctx.SaveUploadedFile(file, caminhoDestino)
+
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Erro ao copiar imagem: %v", err)})
 			return

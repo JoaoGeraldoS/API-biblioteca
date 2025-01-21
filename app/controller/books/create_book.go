@@ -34,6 +34,7 @@ func CreateBook(db *sql.DB, book *models.Books, categories []string, file string
 	// Faz a iteração no array de categorias recebidas pelo json
 	for _, category := range categories {
 		_, err := validacao.ValidaCategories(db, category) // Passa o parametro para a função de validação de categorias
+
 		if err != nil {
 			return nil, fmt.Errorf("erro ao verificar ou criar categoria: %v", err) // Caso a verficação da erro, esse erro é rotornado
 		}

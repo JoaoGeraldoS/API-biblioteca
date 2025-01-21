@@ -13,6 +13,5 @@ func main() {
 	os.MkdirAll("./uploads/capas", os.ModePerm)
 
 	r := handler.Routes(db)
-
 	r.Run(":8080")
 }

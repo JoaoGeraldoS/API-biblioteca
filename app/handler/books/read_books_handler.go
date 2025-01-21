@@ -19,6 +19,7 @@ func ReadBookHandler(db *sql.DB) gin.HandlerFunc {
 		category := ctx.Query("category")
 
 		response, err := books.ReadBook(getid, title, author, category, page, db)
+
 		if err != nil {
 			log.Println(err)
 			ctx.JSON(http.StatusNotFound, gin.H{"error": "livros não encontrados!"})
