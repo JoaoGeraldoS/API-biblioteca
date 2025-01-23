@@ -16,8 +16,6 @@ func ReadBook(id, title, author, category string, page string, db *sql.DB) ([]mo
 
 	booksMap := make(map[int64]*models.Books)
 
-	size := 10 // Tamanho padrão de dados por paginas
-
 	query := `select b.id, b.title, b.author_id, b.description, b.content,
 		DATE_FORMAT(b.created_at, '%d/%m/%y %H:%i:%s') AS created_at, DATE_FORMAT(b.updated_at, '%d/%m/%y %H:%i:%s') AS updated_at,
 		c.id, c.name, DATE_FORMAT(c.created_at, '%d/%m/%y %H:%i:%s') AS created_at, ifnull(b.img,"Imagem não informada!") as imagem,
@@ -51,6 +49,8 @@ func ReadBook(id, title, author, category string, page string, db *sql.DB) ([]mo
 	}
 
 	if page != "" {
+		size := 10 // Tamanho padrão de dados por paginas
+
 		intPage, err := strconv.Atoi(page)
 		if err != nil {
 			return nil, fmt.Errorf("erro na gerção de pages")

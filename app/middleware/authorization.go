@@ -73,11 +73,6 @@ func AuthMiddleware() gin.HandlerFunc {
 		ctx.Set("User", claims.User)
 		ctx.Set("role", claims.Role)
 
-		// ctx.JSON(http.StatusOK, gin.H{
-		// 	"debug_user": claims.User,
-		// 	"debug_role": claims.Role,
-		// })
-
 		ctx.Next()
 	}
 }

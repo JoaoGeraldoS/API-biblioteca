@@ -70,6 +70,5 @@ func CreateBookHandler(db *sql.DB) gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusCreated, gin.H{"message": "Livro criado!", "livro": respose})
-
 	}
 }
