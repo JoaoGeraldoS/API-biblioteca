@@ -102,9 +102,8 @@ func ReadBook(id, title, author, category string, page string, db *sql.DB) ([]mo
 				CreatedAt:   created_at,
 				UpdatedAt:   updated_at,
 				Img:         fullImageURL,
-
-				Categories: []models.Categories{},
-				Authors:    []models.Authors{},
+				Categories:  []models.Categories{},
+				Authors:     []models.Authors{},
 			}
 		}
 
@@ -119,6 +118,7 @@ func ReadBook(id, title, author, category string, page string, db *sql.DB) ([]mo
 			Name:        authorName,
 			Description: authorDescription,
 		})
+
 	}
 
 	var books []models.Books

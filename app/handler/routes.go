@@ -8,7 +8,6 @@ import (
 
 	"github.com/JoaoGeraldoS/API-biblioteca/app/handler/books"
 	"github.com/JoaoGeraldoS/API-biblioteca/app/handler/categories"
-	"github.com/JoaoGeraldoS/API-biblioteca/app/handler/comments"
 	"github.com/JoaoGeraldoS/API-biblioteca/app/handler/users"
 	"github.com/JoaoGeraldoS/API-biblioteca/app/middleware"
 	"github.com/gin-contrib/cors"
@@ -59,8 +58,6 @@ func Routes(db *sql.DB) *gin.Engine {
 		// Rota Usuarios
 		r.GET("/users", users.ReadUsersHandler(db))
 	}
-
-	r.POST("/comments", comments.CreateCommentsHandler(db))
 
 	r.POST("/users", users.CerateUserHandler(db))
 	r.POST("/login", users.LoginHandler(db))
