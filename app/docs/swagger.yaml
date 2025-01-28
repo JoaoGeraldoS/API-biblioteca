@@ -1,0 +1,419 @@
+definitions:
+  models.Authors:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      photo:
+        type: string
+    type: object
+  models.Books:
+    properties:
+      author:
+        items:
+          $ref: '#/definitions/models.Authors'
+        type: array
+      author_id:
+        type: integer
+      categories:
+        items:
+          $ref: '#/definitions/models.Categories'
+        type: array
+      content:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      img:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Categories:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        minLength: 3
+        type: string
+    required:
+    - name
+    type: object
+  models.Users:
+    properties:
+      bio:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      photo:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  validacao.GenericResponse-models_Books:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/models.Books'
+        type: array
+    type: object
+  validacao.GenericResponse-models_Categories:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/models.Categories'
+        type: array
+    type: object
+  validacao.GenericResponse-models_Users:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/models.Users'
+        type: array
+    type: object
+  validacao.Response:
+    properties:
+      message:
+        type: string
+    type: object
+  validacao.ResponseGeneric-models_Books:
+    properties:
+      items:
+        $ref: '#/definitions/models.Books'
+    type: object
+  validacao.ResponseGeneric-models_Categories:
+    properties:
+      items:
+        $ref: '#/definitions/models.Categories'
+    type: object
+  validacao.ResponseGeneric-models_Users:
+    properties:
+      items:
+        $ref: '#/definitions/models.Users'
+    type: object
+info:
+  contact: {}
+paths:
+  /admin/books:
+    get:
+      consumes:
+      - application/json
+      description: Ler e restorna os dados dos livros com categorias e autores, e
+        filtros
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            $ref: '#/definitions/validacao.GenericResponse-models_Books'
+        "404":
+          description: Dados não existentes
+          schema:
+            type: string
+      summary: Ler os livros
+      tags:
+      - Livros
+    post:
+      consumes:
+      - multipart/form-data
+      description: Cria um novo livro com os dados fornecidos, incluindo título, descrição,
+        conteúdo, autor, categorias e imagem.
+      parameters:
+      - description: Título do Livro
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: Descrição do Livro
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Conteúdo do Livro
+        in: formData
+        name: content
+        required: true
+        type: string
+      - description: ID do Autor
+        in: formData
+        name: author_id
+        required: true
+        type: integer
+      - collectionFormat: csv
+        description: Categorias do Livro
+        in: formData
+        items:
+          type: string
+        name: categories
+        type: array
+      - description: Imagem do Livro
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Livro criado com sucesso
+          schema:
+            $ref: '#/definitions/validacao.ResponseGeneric-models_Books'
+        "400":
+          description: Erro nos dados fornecidos
+          schema:
+            type: string
+        "500":
+          description: Erro interno do servidor
+          schema:
+            type: string
+      summary: Cria um novo livro
+      tags:
+      - Livros
+  /admin/books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Apaga um livro fornecido pelo id
+      parameters:
+      - description: Recebe o id do livro
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            type: string
+        "404":
+          description: Dados não existentes
+          schema:
+            type: string
+      summary: Apaga um novo livro
+      tags:
+      - Livros
+    put:
+      consumes:
+      - application/json
+      description: Atualiza um livro fornecido pelo id
+      parameters:
+      - description: Recebe o id do livro
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            $ref: '#/definitions/validacao.Response'
+        "400":
+          description: Requisição nao execultada
+          schema:
+            type: string
+        "500":
+          description: Erro no servidor
+          schema:
+            type: string
+      summary: Atualiza um novo livro
+      tags:
+      - Livros
+  /admin/categories:
+    get:
+      consumes:
+      - application/json
+      description: Ler e restorna os dados das categorias
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            $ref: '#/definitions/validacao.GenericResponse-models_Categories'
+        "404":
+          description: Dados não existentes
+          schema:
+            type: string
+      summary: Ler as categorias
+      tags:
+      - Categorias
+    post:
+      consumes:
+      - application/json
+      description: Cria uma categoria com os dados fornecidos, nome
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Categoria criada com sucesso
+          schema:
+            $ref: '#/definitions/validacao.ResponseGeneric-models_Categories'
+        "400":
+          description: Requisição nao execultada
+          schema:
+            type: string
+        "500":
+          description: Erro interno do servidor
+          schema:
+            type: string
+      summary: Cria uma categoria
+      tags:
+      - Categorias
+  /admin/categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Apaga uma categoria fornecido pelo id
+      parameters:
+      - description: Recebe o id do livro
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            type: string
+        "404":
+          description: Dados não existentes
+          schema:
+            type: string
+      summary: Apaga uma categoria livro
+      tags:
+      - Categorias
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Faz o login do usuario
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Usuario criado com sucesso
+          schema:
+            $ref: '#/definitions/validacao.Response'
+        "400":
+          description: Erro nos dados fornecidos
+          schema:
+            type: string
+        "500":
+          description: Erro interno do servidor
+          schema:
+            type: string
+      summary: Faz o login do usuario
+      tags:
+      - Usuarios
+  /public/books:
+    get:
+      consumes:
+      - application/json
+      description: Ler e restorna os dados dos usuarios com  filtros
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            $ref: '#/definitions/validacao.GenericResponse-models_Users'
+        "404":
+          description: Dados não existentes
+          schema:
+            type: string
+      summary: Ler os Usuarios
+      tags:
+      - Usuarios
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo usuario com os dados fornecidos, name, email, senha,
+        username
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Usuario criado com sucesso
+          schema:
+            $ref: '#/definitions/validacao.ResponseGeneric-models_Users'
+        "400":
+          description: Erro nos dados fornecidos
+          schema:
+            type: string
+        "500":
+          description: Erro interno do servidor
+          schema:
+            type: string
+      summary: Cria um novo Usuario
+      tags:
+      - Usuarios
+  /users/users/{id}:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Atualiza usuarios com os dados fornecidos, name, bio, foto
+      parameters:
+      - description: Nome do usuario
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Descrição do usuario
+        in: formData
+        name: bio
+        required: true
+        type: string
+      - description: Foto do usuario
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Livro criado com sucesso
+          schema:
+            $ref: '#/definitions/validacao.ResponseGeneric-models_Users'
+        "400":
+          description: Erro nos dados fornecidos
+          schema:
+            type: string
+        "500":
+          description: Erro interno do servidor
+          schema:
+            type: string
+      summary: Atualiza usuarios
+      tags:
+      - Usuarios
+swagger: "2.0"

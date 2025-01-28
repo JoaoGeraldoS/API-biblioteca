@@ -6,9 +6,26 @@ import (
 	"net/http"
 
 	"github.com/JoaoGeraldoS/API-biblioteca/app/controller/books"
+	"github.com/JoaoGeraldoS/API-biblioteca/app/models"
+	"github.com/JoaoGeraldoS/API-biblioteca/app/validacao"
 	"github.com/gin-gonic/gin"
 )
 
+// Ler as e retorna os dados do banco
+// @Summary Ler os livros
+// @Description Ler e restorna os dados dos livros com categorias e autores, e filtros
+// @Tags Livros
+// @Accept json
+// @Produce json
+// @Query page "Paginação"
+// @Query id "Retorno de um livro"
+// @Query title "Busca pelo titulo"
+// @Query author "Busca pelo autor"
+// @Query category "Busca por categoria"
+// @Success 200 {object} validacao.GenericResponse[models.Books] "Execultada com sucesso"
+// @Failure 404 {string} validacao.ErrorResponse "Dados não existentes"
+// @Router /public/books [get]
+// @Router /admin/books [get]
 func ReadBookHandler(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -22,10 +39,10 @@ func ReadBookHandler(db *sql.DB) gin.HandlerFunc {
 
 		if err != nil {
 			log.Println(err)
-			ctx.JSON(http.StatusNotFound, gin.H{"error": "livros não encontrados!"})
+			ctx.JSON(http.StatusNotFound, validacao.ErrorResponse{Message: "livros não encontrados!"})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"livros": response})
+		ctx.JSON(http.StatusOK, validacao.GenericResponse[models.Books]{Items: response})
 	}
 }
