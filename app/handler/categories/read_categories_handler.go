@@ -16,6 +16,7 @@ import (
 // @Tags Categorias
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Success 200 {object} validacao.GenericResponse[models.Categories] "Execultada com sucesso"
 // @Failure 404 {string} validacao.ErrorResponse "Dados não existentes"
 // @Router /admin/categories [get]

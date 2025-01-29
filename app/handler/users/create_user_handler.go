@@ -16,11 +16,12 @@ import (
 // @Tags Usuarios
 // @Accept json
 // @Produce json
+// @Param Users body models.Users true "Cria usuario, Parametros: Name, Email, Password, Username, Role"
 // @Success 201 {object} validacao.ResponseGeneric[models.Users] "Usuario criado com sucesso"
 // @Failure 400 {string} validacao.ErrorResponse "Erro nos dados fornecidos"
 // @Failure 500 {string} validacao.ErrorResponse "Erro interno do servidor"
 // @Router /users [post]
-func CerateUserHandler(db *sql.DB) gin.HandlerFunc {
+func CreateUserHandler(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var user models.Users
 

@@ -19,7 +19,7 @@ func Routes(db *sql.DB) *gin.Engine {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://127.0.0.1:5500", "http://localhost:8080"},
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -59,7 +59,7 @@ func Routes(db *sql.DB) *gin.Engine {
 		r.GET("/users", users.ReadUsersHandler(db))
 	}
 
-	r.POST("/users", users.CerateUserHandler(db))
+	r.POST("/users", users.CreateUserHandler(db))
 	r.POST("/login", users.LoginHandler(db))
 
 	return r

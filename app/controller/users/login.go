@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/JoaoGeraldoS/API-biblioteca/app/middleware"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Login(db *sql.DB, username, password string) (string, error) {
@@ -18,9 +19,9 @@ func Login(db *sql.DB, username, password string) (string, error) {
 		return "", fmt.Errorf("erro ao buscar usuario")
 	}
 
-	// if err := bcrypt.CompareHashAndPassword([]byte(senhaHash), []byte(password)); err != nil {
-	// 	return "", fmt.Errorf("usuario ou senha invalidos")
-	// }
+	if err := bcrypt.CompareHashAndPassword([]byte(senhaHash), []byte(password)); err != nil {
+		return "", fmt.Errorf("usuario ou senha invalidos")
+	}
 
 	token, err := middleware.GerarToken(username, role)
 	if err != nil {

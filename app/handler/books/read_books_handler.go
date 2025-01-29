@@ -17,6 +17,7 @@ import (
 // @Tags Livros
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Query page "Paginação"
 // @Query id "Retorno de um livro"
 // @Query title "Busca pelo titulo"

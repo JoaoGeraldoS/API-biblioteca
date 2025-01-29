@@ -11,6 +11,12 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title API com JWT
+// @version 1.0
+// @description API com autenticação JWT e Swagger
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	db := config.Conection()
 

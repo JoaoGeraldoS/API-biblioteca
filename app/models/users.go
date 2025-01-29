@@ -12,3 +12,8 @@ type Users struct {
 	Created_at string `json:"created_at"`
 	Updated_at string `json:"updated_at"`
 }
+
+type LoginRequest struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}

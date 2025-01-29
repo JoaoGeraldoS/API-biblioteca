@@ -28,6 +28,15 @@ const docTemplate = `{
                     "Livros"
                 ],
                 "summary": "Ler os livros",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Execultada com sucesso",
@@ -56,6 +65,13 @@ const docTemplate = `{
                 ],
                 "summary": "Cria um novo livro",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Título do Livro",
@@ -139,6 +155,13 @@ const docTemplate = `{
                 "summary": "Atualiza um novo livro",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Recebe o id do livro",
                         "name": "id",
@@ -181,6 +204,13 @@ const docTemplate = `{
                 "summary": "Apaga um novo livro",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Recebe o id do livro",
                         "name": "id",
@@ -217,6 +247,15 @@ const docTemplate = `{
                     "Categorias"
                 ],
                 "summary": "Ler as categorias",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Execultada com sucesso",
@@ -244,6 +283,24 @@ const docTemplate = `{
                     "Categorias"
                 ],
                 "summary": "Cria uma categoria",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Cria categoria, parametros: Name",
+                        "name": "Categories",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Categoria criada com sucesso",
@@ -281,8 +338,15 @@ const docTemplate = `{
                 "summary": "Apaga uma categoria livro",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
-                        "description": "Recebe o id do livro",
+                        "description": "Recebe o id da categoria",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -317,6 +381,17 @@ const docTemplate = `{
                     "Usuarios"
                 ],
                 "summary": "Faz o login do usuario",
+                "parameters": [
+                    {
+                        "description": "Dados do login do usuário",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Usuario criado com sucesso",
@@ -381,6 +456,17 @@ const docTemplate = `{
                     "Usuarios"
                 ],
                 "summary": "Cria um novo Usuario",
+                "parameters": [
+                    {
+                        "description": "Cria usuario, Parametros: Name, Email, Password, Username, Role",
+                        "name": "Users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Users"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Usuario criado com sucesso",
@@ -539,6 +625,21 @@ const docTemplate = `{
                 }
             }
         },
+        "models.LoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Users": {
             "type": "object",
             "properties": {
@@ -639,17 +740,24 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "API com JWT",
+	Description:      "API com autenticação JWT e Swagger",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

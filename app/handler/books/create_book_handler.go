@@ -22,6 +22,7 @@ import (
 // @Tags Livros
 // @Accept multipart/form-data
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param title formData string true "Título do Livro"
 // @Param description formData string true "Descrição do Livro"
 // @Param content formData string true "Conteúdo do Livro"
@@ -39,7 +40,7 @@ func CreateBookHandler(db *sql.DB) gin.HandlerFunc {
 		description := ctx.PostForm("description")
 		content := ctx.PostForm("content")
 		authorIDStr := ctx.PostForm("author_id")
-		categories := ctx.PostFormArray("categories[]")
+		categories := ctx.PostFormArray("categories")
 
 		// Converta o authorId para int64
 		authorID, err := strconv.ParseInt(authorIDStr, 10, 64)

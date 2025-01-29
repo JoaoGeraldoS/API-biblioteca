@@ -16,6 +16,8 @@ import (
 // @Tags Categorias
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
+// @Param Categories body models.Categories true "Cria categoria, parametros: Name"
 // @Success 201 {object} validacao.ResponseGeneric[models.Categories] "Categoria criada com sucesso"
 // @Failure 400 {string} validacao.ErrorResponse "Requisição nao execultada"
 // @Failure 500 {string} validacao.ErrorResponse "Erro interno do servidor"

@@ -49,6 +49,16 @@ definitions:
     required:
     - name
     type: object
+  models.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
   models.Users:
     properties:
       bio:
@@ -115,6 +125,9 @@ definitions:
     type: object
 info:
   contact: {}
+  description: API com autenticação JWT e Swagger
+  title: API com JWT
+  version: "1.0"
 paths:
   /admin/books:
     get:
@@ -122,6 +135,12 @@ paths:
       - application/json
       description: Ler e restorna os dados dos livros com categorias e autores, e
         filtros
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -142,6 +161,11 @@ paths:
       description: Cria um novo livro com os dados fornecidos, incluindo título, descrição,
         conteúdo, autor, categorias e imagem.
       parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Título do Livro
         in: formData
         name: title
@@ -198,6 +222,11 @@ paths:
       - application/json
       description: Apaga um livro fornecido pelo id
       parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Recebe o id do livro
         in: path
         name: id
@@ -222,6 +251,11 @@ paths:
       - application/json
       description: Atualiza um livro fornecido pelo id
       parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Recebe o id do livro
         in: path
         name: id
@@ -250,6 +284,12 @@ paths:
       consumes:
       - application/json
       description: Ler e restorna os dados das categorias
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -268,6 +308,18 @@ paths:
       consumes:
       - application/json
       description: Cria uma categoria com os dados fornecidos, nome
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 'Cria categoria, parametros: Name'
+        in: body
+        name: Categories
+        required: true
+        schema:
+          $ref: '#/definitions/models.Categories'
       produces:
       - application/json
       responses:
@@ -292,7 +344,12 @@ paths:
       - application/json
       description: Apaga uma categoria fornecido pelo id
       parameters:
-      - description: Recebe o id do livro
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Recebe o id da categoria
         in: path
         name: id
         required: true
@@ -316,6 +373,13 @@ paths:
       consumes:
       - application/json
       description: Faz o login do usuario
+      parameters:
+      - description: Dados do login do usuário
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
       produces:
       - application/json
       responses:
@@ -359,6 +423,13 @@ paths:
       - application/json
       description: Cria um novo usuario com os dados fornecidos, name, email, senha,
         username
+      parameters:
+      - description: 'Cria usuario, Parametros: Name, Email, Password, Username, Role'
+        in: body
+        name: Users
+        required: true
+        schema:
+          $ref: '#/definitions/models.Users'
       produces:
       - application/json
       responses:
@@ -416,4 +487,9 @@ paths:
       summary: Atualiza usuarios
       tags:
       - Usuarios
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

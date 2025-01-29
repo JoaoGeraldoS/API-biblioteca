@@ -15,7 +15,8 @@ import (
 // @Tags Categorias
 // @Accept json
 // @Produce json
-// @Param id path int true "Recebe o id do livro"
+// @Param Authorization header string true "Bearer token"
+// @Param id path int true "Recebe o id da categoria"
 // @Success 200 {string} validacao.Response "Execultada com sucesso"
 // @Failure 404 {string} validacao.ErrorResponse "Dados não existentes"
 // @Router /admin/categories/{id} [delete]

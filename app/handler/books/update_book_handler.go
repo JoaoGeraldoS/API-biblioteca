@@ -16,6 +16,7 @@ import (
 // @Tags Livros
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param id path int true "Recebe o id do livro"
 // @Success 200 {object} validacao.Response "Execultada com sucesso"
 // @Failure 400 {string} validacao.ErrorResponse "Requisição nao execultada"
