@@ -34,6 +34,7 @@ func Routes(db *sql.DB) *gin.Engine {
 		public.GET("/books", books.ReadBookHandler(db))
 	}
 
+	// Grupo da Rota User
 	userComun := r.Group("/users")
 	userComun.Use(middleware.AuthMiddleware())
 	{
@@ -41,6 +42,7 @@ func Routes(db *sql.DB) *gin.Engine {
 		userComun.PUT("/users/:id", users.UpdateUserHandler(db))
 	}
 
+	// Grupo da Rota admin
 	admin := r.Group("/admin")
 	admin.Use(middleware.AuthMiddleware(), middleware.AdminMiddleware())
 	{
@@ -56,7 +58,8 @@ func Routes(db *sql.DB) *gin.Engine {
 		admin.DELETE("/categories/:id", categories.DeleteCategoryHandler(db))
 
 		// Rota Usuarios
-		r.GET("/users", users.ReadUsersHandler(db))
+		admin.GET("/users", users.ReadUsersHandler(db))
+		admin.DELETE("/users/:id", users.DeleteUserHandler(db))
 	}
 
 	r.POST("/users", users.CreateUserHandler(db))

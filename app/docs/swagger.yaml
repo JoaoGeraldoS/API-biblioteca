@@ -368,6 +368,36 @@ paths:
       summary: Apaga uma categoria livro
       tags:
       - Categorias
+  /admin/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Apaga um usuario fornecido pelo id
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Recebe o id do usuario
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            type: string
+        "404":
+          description: Dados não existentes
+          schema:
+            type: string
+      summary: Apaga um usuario
+      tags:
+      - Usuarios
   /login:
     post:
       consumes:

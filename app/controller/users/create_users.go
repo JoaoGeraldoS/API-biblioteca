@@ -18,6 +18,10 @@ func CreateUsers(db *sql.DB, user *models.Users) (*models.Users, error) {
 
 	user.Password = string(hashedPassword)
 
+	if user.Role == "" {
+		user.Role = "User"
+	}
+
 	query := `INSERT INTO users(name, email, password, username, role) VALUES (?, ?, ?, ?, ?)`
 
 	response, err := db.Exec(query, user.Name, user.Email, user.Password, user.Username, user.Role)

@@ -16,20 +16,19 @@ func Conection() *sql.DB {
 		log.Fatalf("Erro ao carregar o arquivo .env: %v", err)
 	}
 
-	entrada := fmt.Sprintf(
+	connectionString := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s",
 		os.Getenv("USER"), os.Getenv("PASSWORD"), os.Getenv("HOST"), os.Getenv("PORT"), os.Getenv("DATABASE"),
 	)
 
-	conexao, err := sql.Open("mysql", entrada)
+	session, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		log.Fatalln("Erro ao caonectar com o banco de dados!", err)
 	}
 
-	if err := conexao.Ping(); err != nil {
+	if err := session.Ping(); err != nil {
 		log.Fatalln("Erro ao verficar conexão")
 	}
-	fmt.Println("Conexão estabelecida!")
 
-	return conexao
+	return session
 }
