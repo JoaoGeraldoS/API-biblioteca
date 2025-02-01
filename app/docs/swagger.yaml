@@ -82,6 +82,13 @@ definitions:
       username:
         type: string
     type: object
+  validacao.GenericResponse-models_Authors:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/models.Authors'
+        type: array
+    type: object
   validacao.GenericResponse-models_Books:
     properties:
       items:
@@ -108,6 +115,11 @@ definitions:
       message:
         type: string
     type: object
+  validacao.ResponseGeneric-models_Authors:
+    properties:
+      items:
+        $ref: '#/definitions/models.Authors'
+    type: object
   validacao.ResponseGeneric-models_Books:
     properties:
       items:
@@ -129,6 +141,106 @@ info:
   title: API com JWT
   version: "1.0"
 paths:
+  /admin/author:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Cria um novo autor com os dados fornecidos, incluindo name, descrição,
+        foto
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Nome do autor
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Descrição do autor
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Foto do autor
+        in: formData
+        name: photo
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Author criado com sucesso
+          schema:
+            $ref: '#/definitions/validacao.ResponseGeneric-models_Authors'
+        "400":
+          description: Erro nos dados fornecidos
+          schema:
+            type: string
+        "500":
+          description: Erro interno do servidor
+          schema:
+            type: string
+      summary: Cria um Autor
+      tags:
+      - Authors
+  /admin/authors:
+    get:
+      consumes:
+      - application/json
+      description: Ler e restorna os dados dos autores
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            $ref: '#/definitions/validacao.GenericResponse-models_Authors'
+        "404":
+          description: Dados não existentes
+          schema:
+            type: string
+      summary: Ler os autores
+      tags:
+      - Authors
+  /admin/authors/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Apaga um autor fornecido pelo id
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Recebe o id do autor
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            type: string
+        "404":
+          description: Dados não existentes
+          schema:
+            type: string
+      summary: Apaga um autor
+      tags:
+      - Authors
   /admin/books:
     get:
       consumes:
@@ -368,6 +480,25 @@ paths:
       summary: Apaga uma categoria livro
       tags:
       - Categorias
+  /admin/users:
+    get:
+      consumes:
+      - application/json
+      description: Ler e restorna os dados dos usuarios com  filtros
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Execultada com sucesso
+          schema:
+            $ref: '#/definitions/validacao.GenericResponse-models_Users'
+        "404":
+          description: Dados não existentes
+          schema:
+            type: string
+      summary: Ler os Usuarios
+      tags:
+      - Usuarios
   /admin/users/{id}:
     delete:
       consumes:
@@ -432,21 +563,28 @@ paths:
     get:
       consumes:
       - application/json
-      description: Ler e restorna os dados dos usuarios com  filtros
+      description: Ler e restorna os dados dos livros com categorias e autores, e
+        filtros
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: Execultada com sucesso
           schema:
-            $ref: '#/definitions/validacao.GenericResponse-models_Users'
+            $ref: '#/definitions/validacao.GenericResponse-models_Books'
         "404":
           description: Dados não existentes
           schema:
             type: string
-      summary: Ler os Usuarios
+      summary: Ler os livros
       tags:
-      - Usuarios
+      - Livros
   /users:
     post:
       consumes:

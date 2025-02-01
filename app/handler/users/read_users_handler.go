@@ -20,7 +20,7 @@ import (
 // @Query name "Busca pelo nome"
 // @Success 200 {object} validacao.GenericResponse[models.Users] "Execultada com sucesso"
 // @Failure 404 {string} validacao.ErrorResponse "Dados não existentes"
-// @Router /public/books [get]
+// @Router /admin/users [get]
 func ReadUsersHandler(db *sql.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 

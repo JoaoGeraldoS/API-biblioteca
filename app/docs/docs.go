@@ -15,6 +15,154 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/author": {
+            "post": {
+                "description": "Cria um novo autor com os dados fornecidos, incluindo name, descrição, foto",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authors"
+                ],
+                "summary": "Cria um Autor",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Nome do autor",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Descrição do autor",
+                        "name": "description",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Foto do autor",
+                        "name": "photo",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Author criado com sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/validacao.ResponseGeneric-models_Authors"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro nos dados fornecidos",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/authors": {
+            "get": {
+                "description": "Ler e restorna os dados dos autores",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authors"
+                ],
+                "summary": "Ler os autores",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Execultada com sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/validacao.GenericResponse-models_Authors"
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não existentes",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/authors/{id}": {
+            "delete": {
+                "description": "Apaga um autor fornecido pelo id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authors"
+                ],
+                "summary": "Apaga um autor",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Recebe o id do autor",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Execultada com sucesso",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não existentes",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/books": {
             "get": {
                 "description": "Ler e restorna os dados dos livros com categorias e autores, e filtros",
@@ -368,6 +516,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/users": {
+            "get": {
+                "description": "Ler e restorna os dados dos usuarios com  filtros",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Ler os Usuarios",
+                "responses": {
+                    "200": {
+                        "description": "Execultada com sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/validacao.GenericResponse-models_Users"
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não existentes",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/users/{id}": {
             "delete": {
                 "description": "Apaga um usuario fornecido pelo id",
@@ -461,7 +638,7 @@ const docTemplate = `{
         },
         "/public/books": {
             "get": {
-                "description": "Ler e restorna os dados dos usuarios com  filtros",
+                "description": "Ler e restorna os dados dos livros com categorias e autores, e filtros",
                 "consumes": [
                     "application/json"
                 ],
@@ -469,14 +646,23 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Usuarios"
+                    "Livros"
                 ],
-                "summary": "Ler os Usuarios",
+                "summary": "Ler os livros",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Execultada com sucesso",
                         "schema": {
-                            "$ref": "#/definitions/validacao.GenericResponse-models_Users"
+                            "$ref": "#/definitions/validacao.GenericResponse-models_Books"
                         }
                     },
                     "404": {
@@ -720,6 +906,17 @@ const docTemplate = `{
                 }
             }
         },
+        "validacao.GenericResponse-models_Authors": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Authors"
+                    }
+                }
+            }
+        },
         "validacao.GenericResponse-models_Books": {
             "type": "object",
             "properties": {
@@ -758,6 +955,14 @@ const docTemplate = `{
             "properties": {
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "validacao.ResponseGeneric-models_Authors": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "$ref": "#/definitions/models.Authors"
                 }
             }
         },

@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/JoaoGeraldoS/API-biblioteca/app/handler/author"
 	"github.com/JoaoGeraldoS/API-biblioteca/app/handler/books"
 	"github.com/JoaoGeraldoS/API-biblioteca/app/handler/categories"
 	"github.com/JoaoGeraldoS/API-biblioteca/app/handler/users"
@@ -38,7 +39,7 @@ func Routes(db *sql.DB) *gin.Engine {
 	userComun := r.Group("/users")
 	userComun.Use(middleware.AuthMiddleware())
 	{
-		userComun.GET("/users", users.ReadUsersHandler(db))
+
 		userComun.PUT("/users/:id", users.UpdateUserHandler(db))
 	}
 
@@ -56,6 +57,9 @@ func Routes(db *sql.DB) *gin.Engine {
 		admin.POST("/categories", categories.CreateCategoryHandler(db))
 		admin.GET("/categories", categories.ReadCategoriesHandler(db))
 		admin.DELETE("/categories/:id", categories.DeleteCategoryHandler(db))
+
+		// Rota authors
+		admin.POST("/authors", author.CreateAuthorHandler(db))
 
 		// Rota Usuarios
 		admin.GET("/users", users.ReadUsersHandler(db))

@@ -2,7 +2,7 @@ package books
 
 import (
 	"database/sql"
-	"log"
+	"fmt"
 )
 
 func DeleteBook(id string, db *sql.DB) error {
@@ -10,12 +10,12 @@ func DeleteBook(id string, db *sql.DB) error {
 
 	row, err := db.Exec(query, id)
 	if err != nil {
-		log.Println("Erro ao deletear dados")
+		return fmt.Errorf("erro ao deletear dados! %v", err)
 	}
 
 	rowAffected, err := row.RowsAffected()
 	if err != nil || rowAffected == 0 {
-		log.Println("Error dados nao encontrados")
+		return fmt.Errorf("error dados nao encontrados! %v", err)
 	}
 
 	return nil
