@@ -72,7 +72,28 @@ Rota para visualizar
 Rota para deletar categoria
 - ### DELETE /admin/categories/:id
    - Sem parametros
-  
+
+### Autores
+Rota para adicionar autores via formulario
+- ### POST /admin/authors
+  - Name
+  - Description
+  - Photo
+
+Rota de visualizar autores
+- ### GET /admin/authors
+  ~~~
+  - id
+  - name
+  - Description
+  - Photo
+  ~~~
+
+Rota para deletar author
+- ### DELETE /admin/authors/:id
+  - Sem parametros
+
+
 ## Usuarios
 Rota para criar usuarios
 - ### POST /users
