@@ -52,6 +52,7 @@ func Routes(db *sql.DB) *gin.Engine {
 		admin.GET("/books", books.ReadBookHandler(db))
 		admin.PUT("/books/:id", books.UpdateBookHandler(db))
 		admin.DELETE("/books/:id", books.DeleteBookHandler(db))
+		admin.POST("/relation", books.RelationHandler(db))
 
 		// Rota categorias
 		admin.POST("/categories", categories.CreateCategoryHandler(db))

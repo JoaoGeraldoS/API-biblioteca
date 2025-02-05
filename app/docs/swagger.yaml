@@ -49,6 +49,15 @@ definitions:
     required:
     - name
     type: object
+  models.Intermediary:
+    properties:
+      book_id:
+        type: integer
+      category_id:
+        type: integer
+      id:
+        type: integer
+    type: object
   models.LoginRequest:
     properties:
       password:
@@ -129,6 +138,11 @@ definitions:
     properties:
       items:
         $ref: '#/definitions/models.Categories'
+    type: object
+  validacao.ResponseGeneric-models_Intermediary:
+    properties:
+      items:
+        $ref: '#/definitions/models.Intermediary'
     type: object
   validacao.ResponseGeneric-models_Users:
     properties:
@@ -480,6 +494,42 @@ paths:
       summary: Apaga uma categoria livro
       tags:
       - Categorias
+  /admin/relation:
+    post:
+      consumes:
+      - application/json
+      description: Relaciona livro a categoria com os dados fornecidos, incluindo
+        id do livro, id da categoria
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Recebe o id do livro e o id da categoria
+        in: body
+        name: ids
+        required: true
+        schema:
+          $ref: '#/definitions/models.Intermediary'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Relaciona livro a categoria
+          schema:
+            $ref: '#/definitions/validacao.ResponseGeneric-models_Intermediary'
+        "400":
+          description: Erro nos dados fornecidos
+          schema:
+            type: string
+        "500":
+          description: Erro interno do servidor
+          schema:
+            type: string
+      summary: Relaciona livro a categoria
+      tags:
+      - Livros
   /admin/users:
     get:
       consumes:

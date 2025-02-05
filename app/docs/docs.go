@@ -516,6 +516,59 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/relation": {
+            "post": {
+                "description": "Relaciona livro a categoria com os dados fornecidos, incluindo id do livro, id da categoria",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Relaciona livro a categoria",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Recebe o id do livro e o id da categoria",
+                        "name": "ids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Intermediary"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Relaciona livro a categoria",
+                        "schema": {
+                            "$ref": "#/definitions/validacao.ResponseGeneric-models_Intermediary"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro nos dados fornecidos",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/users": {
             "get": {
                 "description": "Ler e restorna os dados dos usuarios com  filtros",
@@ -856,6 +909,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Intermediary": {
+            "type": "object",
+            "properties": {
+                "book_id": {
+                    "type": "integer"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.LoginRequest": {
             "type": "object",
             "required": [
@@ -979,6 +1046,14 @@ const docTemplate = `{
             "properties": {
                 "items": {
                     "$ref": "#/definitions/models.Categories"
+                }
+            }
+        },
+        "validacao.ResponseGeneric-models_Intermediary": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "$ref": "#/definitions/models.Intermediary"
                 }
             }
         },
