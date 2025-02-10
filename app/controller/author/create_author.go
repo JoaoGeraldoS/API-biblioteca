@@ -8,7 +8,7 @@ import (
 )
 
 func CreateAuthor(db *sql.DB, author *models.Authors, file string) (*models.Authors, error) {
-	query := `INSERTE INTO authors (name, description, photo) VALUES (?, ?, ?)`
+	query := `INSERT INTO authors (name, description, photo) VALUES (?, ?, ?)`
 
 	response, err := db.Exec(query, author.Name, author.Description, file)
 	if err != nil {
